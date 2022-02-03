@@ -5,20 +5,20 @@ import bcrypt from 'bcrypt';
 import { sign, verify } from 'jsonwebtoken';
 
 export const register = async (req: Request, res: Response) => {
-  const { first_name, last_name, email, password, password_confirm } = req.body;
+  const { password, password_confirm, ...rest } = req.body;
 
   try {
     if (password !== password_confirm) {
       return res.status(400).json({ msg: 'Passwords do not match!' });
     }
 
-    const { password: _, ...user } = await getRepository(User).save({
-      first_name,
-      last_name,
-      email,
+    const user = await getRepository(User).save({
+      ...rest,
       password: await bcrypt.hash(password, 10),
       is_ambassador: false
     });
+
+    delete user.password;
 
     res.status(201).json({ msg: 'Admin user created successfully.', user });
   } catch (error) {
@@ -27,7 +27,10 @@ export const register = async (req: Request, res: Response) => {
 };
 
 export const login = async (req: Request, res: Response) => {
-  const user = await getRepository(User).findOne({ email: req.body.email });
+  const user = await getRepository(User).findOne(
+    { email: req.body.email },
+    { select: ['id', 'password'] }
+  );
 
   if (!user) {
     return res.status(404).json({ msg: 'Invalid credentials.' });
@@ -57,16 +60,25 @@ export const login = async (req: Request, res: Response) => {
   res.status(200).json({ msg: 'Successfully logged in.' });
 };
 
+export const logout = async (req: Request, res: Response) => {
+  res.cookie('jwt', '', { maxAge: 0 });
+
+  res.status(200).json({ msg: 'Successfully logged out.' });
+};
+
 export const authenticatedUser = async (req: Request, res: Response) => {
-  const jwt = req.cookies['jwt'];
+  try {
+    const jwt = req.cookies['jwt'];
+    const payload: any = verify(jwt, process.env.JWT_SECRET);
 
-  const payload: any = verify(jwt, process.env.JWT_SECRET);
+    if (!payload) {
+      return res.status(401).json({ msg: 'Unauthenticated.' });
+    }
 
-  if (!payload) {
+    const user = await getRepository(User).findOne(payload.id);
+
+    res.status(200).json({ user });
+  } catch (error) {
     return res.status(401).json({ msg: 'Unauthenticated.' });
   }
-
-  const { password, ...user } = await getRepository(User).findOne(payload.id);
-
-  res.json({ user });
 };
