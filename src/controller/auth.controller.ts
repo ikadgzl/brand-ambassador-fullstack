@@ -66,19 +66,8 @@ export const logout = async (req: Request, res: Response) => {
   res.status(200).json({ msg: 'Successfully logged out.' });
 };
 
-export const authenticatedUser = async (req: Request, res: Response) => {
-  try {
-    const jwt = req.cookies['jwt'];
-    const payload: any = verify(jwt, process.env.JWT_SECRET);
+export const getUser = async (req: Request, res: Response) => {
+  const user = req['user'];
 
-    if (!payload) {
-      return res.status(401).json({ msg: 'Unauthenticated.' });
-    }
-
-    const user = await getRepository(User).findOne(payload.id);
-
-    res.status(200).json({ user });
-  } catch (error) {
-    return res.status(401).json({ msg: 'Unauthenticated.' });
-  }
+  res.status(200).json({ user });
 };
