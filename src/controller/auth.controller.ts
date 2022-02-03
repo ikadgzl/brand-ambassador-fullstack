@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 import { User } from '../entity/user.entity';
 import bcrypt from 'bcrypt';
+import { sign } from 'jsonwebtoken';
 
 export const register = async (req: Request, res: Response) => {
   const { first_name, last_name, email, password, password_confirm } = req.body;
@@ -41,7 +42,17 @@ export const login = async (req: Request, res: Response) => {
     return res.status(404).json({ msg: 'Invalid credentials.' });
   }
 
-  const { password, ...rest } = user;
+  const token = sign(
+    {
+      id: user.id
+    },
+    process.env.JWT_SECRET
+  );
 
-  res.status(200).json({ msg: 'Successfully logged in.', user: rest });
+  res.cookie('jwt', token, {
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 10000
+  });
+
+  res.status(200).json({ msg: 'Successfully logged in.' });
 };
