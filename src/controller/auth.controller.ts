@@ -66,8 +66,29 @@ export const logout = async (req: Request, res: Response) => {
   res.status(200).json({ msg: 'Successfully logged out.' });
 };
 
+//TODO: move user-related controllers to its own route&controllers
 export const getUser = async (req: Request, res: Response) => {
   const user = req['user'];
 
   res.status(200).json({ user });
+};
+
+export const updateUser = async (req: Request, res: Response) => {
+  const user = req['user'];
+
+  if (req.body.password) {
+    if (req.body.password !== req.body.confirm_password) {
+      return res.status(400).json({ msg: 'Passwords do not match!' });
+    }
+
+    req.body.password = await bcrypt.hash(req.body.password, 10);
+    delete req.body.confirm_password;
+  }
+
+  await getRepository(User).update(user.id, req.body);
+  const updatedUser = await getRepository(User).findOne(user.id);
+
+  res
+    .status(200)
+    .json({ msg: 'User successfully updated.', user: updatedUser });
 };
