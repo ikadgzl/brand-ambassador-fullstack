@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 import { User } from '../entity/user.entity';
 import bcrypt from 'bcrypt';
-import { sign } from 'jsonwebtoken';
+import { sign, verify } from 'jsonwebtoken';
 
 export const register = async (req: Request, res: Response) => {
   const { first_name, last_name, email, password, password_confirm } = req.body;
@@ -55,4 +55,18 @@ export const login = async (req: Request, res: Response) => {
   });
 
   res.status(200).json({ msg: 'Successfully logged in.' });
+};
+
+export const authenticatedUser = async (req: Request, res: Response) => {
+  const jwt = req.cookies['jwt'];
+
+  const payload: any = verify(jwt, process.env.JWT_SECRET);
+
+  if (!payload) {
+    return res.status(401).json({ msg: 'Unauthenticated.' });
+  }
+
+  const { password, ...user } = await getRepository(User).findOne(payload.id);
+
+  res.json({ user });
 };

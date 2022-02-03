@@ -18,3 +18,14 @@ Content-Type: application/json
   "email": "cagriroborboro@gmail.com",
   "password": "123123"
 }
+
+###
+
+GET http://localhost:8000/api/admin/user
+Content-Type: application/json
+
+{
+  "email": "cagriroborboro@gmail.com",
+  "password": "123123"
+}
+
