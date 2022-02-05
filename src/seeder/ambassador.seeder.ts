@@ -1,4 +1,4 @@
-import { createConnection, getRepository, Repository } from 'typeorm';
+import { createConnection, getRepository } from 'typeorm';
 import { User } from '../entity/user.entity';
 import bcrpyt from 'bcrypt';
 import faker from '@faker-js/faker';

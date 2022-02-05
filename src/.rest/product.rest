@@ -1,0 +1,37 @@
+GET http://localhost:8000/api/admin/products/
+
+###
+
+GET http://localhost:8000/api/admin/products/1
+
+
+###
+
+POST http://localhost:8000/api/admin/products
+Content-Type: application/json
+
+{
+  "title": "item 2",
+  "description": "item nike, nike sneakers, gucci",
+  "image": "nike.png",
+  "price": 95
+}
+
+###
+
+PUT http://localhost:8000/api/admin/products/1
+Content-Type: application/json
+
+
+{
+  "title": "item 1 but UPDATED AGAIN WITH LOW PRICE",
+  "description": "item one, test, test,",
+  "image": "someimage.png",
+  "price": 25
+}
+
+
+###
+
+DELETE http://localhost:8000/api/admin/products/1
+Content-Type: application/json

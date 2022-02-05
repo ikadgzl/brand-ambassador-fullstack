@@ -53,6 +53,3 @@ Content-Type: application/json
 }
 
 
-###
-
-GET  http://localhost:8000/api/admin/ambassadors
