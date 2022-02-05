@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 import { User } from '../entity/user.entity';
 import bcrypt from 'bcrypt';
-import { sign, verify } from 'jsonwebtoken';
+import { sign } from 'jsonwebtoken';
 
 export const register = async (req: Request, res: Response) => {
   const { password, password_confirm, ...rest } = req.body;
@@ -66,7 +66,6 @@ export const logout = async (req: Request, res: Response) => {
   res.status(200).json({ msg: 'Successfully logged out.' });
 };
 
-//TODO: move user-related controllers to its own route&controllers
 export const getUser = async (req: Request, res: Response) => {
   const user = req['user'];
 

@@ -6,6 +6,7 @@ import {
   register,
   updateUser
 } from './controller/auth.controller';
+import { getAmbassadors } from './controller/user.controller';
 import { authMiddleware } from './middleware/auth.middleware';
 
 export const routes = (router: Router) => {
@@ -15,4 +16,6 @@ export const routes = (router: Router) => {
 
   router.get('/api/admin/user', authMiddleware, getUser);
   router.put('/api/admin/user', authMiddleware, updateUser);
+
+  router.get('/api/admin/ambassadors', authMiddleware, getAmbassadors);
 };

@@ -49,5 +49,10 @@ Content-Type: application/json
 {
    "first_name": "cagrito",
    "password": "123123",
-   "confirm_password": "123123"
+   "confirm_password": "1d23123"
 }
+
+
+###
+
+GET  http://localhost:8000/api/admin/ambassadors
