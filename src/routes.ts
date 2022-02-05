@@ -6,6 +6,7 @@ import {
   register,
   updateUser
 } from './controller/auth.controller';
+import { getLinks } from './controller/link.controller';
 import {
   createProduct,
   deleteProduct,
@@ -20,11 +21,13 @@ export const routes = (router: Router) => {
   router.post('/api/admin/register', register);
   router.post('/api/admin/login', login);
   router.post('/api/admin/logout', authMiddleware, logout);
-
   router.get('/api/admin/user', authMiddleware, getUser);
   router.put('/api/admin/user', authMiddleware, updateUser);
 
+  router.get('/api/admin/users/:id/links', authMiddleware, getLinks);
+
   router.get('/api/admin/ambassadors', authMiddleware, getAmbassadors);
+
   router.get('/api/admin/products', authMiddleware, getProducts);
   router.get('/api/admin/products/:id', authMiddleware, getProduct);
   router.post('/api/admin/products', authMiddleware, createProduct);
