@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 import { Product } from '../entity/product.entity';
+import { client } from '../index';
 
 const getProductFromRepo = (id?: string) => {
   return id
@@ -60,4 +61,22 @@ export const deleteProduct = async (req: Request, res: Response) => {
   getRepository(Product).delete(req.params.id);
 
   res.status(204).json({ msg: 'Product deleted successfully!', product });
+};
+
+export const productsFrontend = async (req: Request, res: Response) => {
+  let products = JSON.parse(await client.get('products_frontend'));
+
+  if (!products) {
+    products = await getProductFromRepo();
+
+    await client.set('products_frontend', JSON.stringify(products), {
+      EX: 60 * 30
+    });
+  }
+
+  if (products.length === 0) {
+    return res.status(404).json({ msg: 'No products exits.' });
+  }
+
+  res.status(200).json({ msg: 'Products fetched successfully!', products });
 };

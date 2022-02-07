@@ -13,6 +13,7 @@ import {
   deleteProduct,
   getProduct,
   getProducts,
+  productsFrontend,
   updateProduct
 } from './controller/product.controller';
 import { getAmbassadors } from './controller/user.controller';
@@ -47,4 +48,10 @@ export const routes = (router: Router) => {
   router.post('/api/ambassador/logout', authMiddleware, logout);
   router.get('/api/ambassador/user', authMiddleware, getUser);
   router.put('/api/ambassador/user', authMiddleware, updateUser);
+
+  router.get(
+    '/api/ambassador/products/frontend',
+    authMiddleware,
+    productsFrontend
+  );
 };
