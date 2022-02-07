@@ -1,12 +1,22 @@
-POST http://localhost:8000/api/admin/register
+POST http://localhost:8000/api/ambassador/register
 Content-Type: application/json
 
 {
-  "first_name": "another",
-  "last_name": "one",
-  "email": "anothaone@gmail.com",
+  "first_name": "im ambassador bro",
+  "last_name": "yes i am",
+  "email": "ambassador@gmail.com",
   "password": "123123",
   "password_confirm": "123123"
+}
+
+###
+
+POST http://localhost:8000/api/ambassador/login
+Content-Type: application/json
+
+{
+ "email": "ambassador@gmail.com",
+  "password": "123123"
 }
 
 ###
@@ -22,24 +32,10 @@ Content-Type: application/json
 ###
 
 POST http://localhost:8000/api/admin/logout
-Content-Type: application/json
-
-{
-  "email": "cagriroborboro@gmail.com",
-  "password": "123123"
-}
-
 
 ###
 
 GET http://localhost:8000/api/admin/user
-Content-Type: application/json
-
-{
-  "email": "cagriroborboro@gmail.com",
-  "password": "123123"
-}
-
 
 ###
 

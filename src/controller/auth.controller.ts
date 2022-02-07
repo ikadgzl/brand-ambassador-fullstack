@@ -45,13 +45,15 @@ export const login = async (req: Request, res: Response) => {
     return res.status(404).json({ msg: 'Invalid credentials.' });
   }
 
+  const isAdmin = req.path === '/api/admin/login';
   if (user.is_ambassador && req.path === '/api/admin/login') {
     return res.status(401).json({ msg: 'Unauthorized.' });
   }
 
   const token = sign(
     {
-      id: user.id
+      id: user.id,
+      scope: isAdmin ? 'admin' : 'ambassador'
     },
     process.env.JWT_SECRET
   );
