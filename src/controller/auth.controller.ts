@@ -15,7 +15,7 @@ export const register = async (req: Request, res: Response) => {
     const user = await getRepository(User).save({
       ...rest,
       password: await bcrypt.hash(password, 10),
-      is_ambassador: false
+      is_ambassador: req.path === '/api/ambassador/register'
     });
 
     delete user.password;
@@ -29,7 +29,7 @@ export const register = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => {
   const user = await getRepository(User).findOne(
     { email: req.body.email },
-    { select: ['id', 'password'] }
+    { select: ['id', 'password', 'is_ambassador'] }
   );
 
   if (!user) {
@@ -43,6 +43,10 @@ export const login = async (req: Request, res: Response) => {
 
   if (!correctPassword) {
     return res.status(404).json({ msg: 'Invalid credentials.' });
+  }
+
+  if (user.is_ambassador && req.path === '/api/admin/login') {
+    return res.status(401).json({ msg: 'Unauthorized.' });
   }
 
   const token = sign(
