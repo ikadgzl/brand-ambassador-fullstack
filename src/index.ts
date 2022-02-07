@@ -4,10 +4,17 @@ import { createConnection } from 'typeorm';
 import { routes } from './routes';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
+import { createClient } from 'redis';
+
+export const client = createClient({
+  url: 'redis://redis:6379'
+});
 
 dotenv.config();
 
-createConnection().then(() => {
+createConnection().then(async () => {
+  await client.connect();
+
   const app = express();
 
   app.use(cookieParser());
