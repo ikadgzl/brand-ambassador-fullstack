@@ -3,6 +3,7 @@ import { getRepository } from 'typeorm';
 import { User } from '../entity/user.entity';
 import bcrypt from 'bcrypt';
 import { sign } from 'jsonwebtoken';
+import { Order } from '../entity/order.entity';
 
 export const register = async (req: Request, res: Response) => {
   const { password, password_confirm, ...rest } = req.body;
@@ -74,6 +75,20 @@ export const logout = async (req: Request, res: Response) => {
 
 export const getUser = async (req: Request, res: Response) => {
   const user = req['user'];
+
+  if (req.path === '/api/admin/user') {
+    return res.status(200).json({ user });
+  }
+
+  const orders = await getRepository(Order).find({
+    where: {
+      user_id: user.id,
+      complete: true
+    },
+    relations: ['order_items']
+  });
+
+  user.revenue = orders.reduce((acc, curr) => acc + curr.ambassador_revenue, 0);
 
   res.status(200).json({ user });
 };

@@ -35,7 +35,7 @@ POST http://localhost:8000/api/admin/logout
 
 ###
 
-GET http://localhost:8000/api/admin/user
+GET http://localhost:8000/api/ambassador/user
 
 ###
 

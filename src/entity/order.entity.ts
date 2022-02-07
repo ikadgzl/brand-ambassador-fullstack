@@ -75,4 +75,11 @@ export class Order {
   get total(): number {
     return this.order_items.reduce((acc, curr) => acc + curr.admin_revenue, 0);
   }
+
+  get ambassador_revenue(): number {
+    return this.order_items.reduce(
+      (acc, curr) => acc + curr.ambassador_revenue,
+      0
+    );
+  }
 }
