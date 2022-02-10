@@ -13,6 +13,7 @@ import {
   deleteProduct,
   getProduct,
   getProducts,
+  productsBackend,
   productsFrontend,
   updateProduct
 } from './controller/product.controller';
@@ -53,5 +54,11 @@ export const routes = (router: Router) => {
     '/api/ambassador/products/frontend',
     authMiddleware,
     productsFrontend
+  );
+
+  router.get(
+    '/api/ambassador/products/backend',
+    authMiddleware,
+    productsBackend
   );
 };

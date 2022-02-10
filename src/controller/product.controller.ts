@@ -63,6 +63,7 @@ export const deleteProduct = async (req: Request, res: Response) => {
   res.status(204).json({ msg: 'Product deleted successfully!', product });
 };
 
+// frontend will handle filtering-sorting-pagination
 export const productsFrontend = async (req: Request, res: Response) => {
   let products = JSON.parse(await client.get('products_frontend'));
 
@@ -72,6 +73,34 @@ export const productsFrontend = async (req: Request, res: Response) => {
     await client.set('products_frontend', JSON.stringify(products), {
       EX: 60 * 30
     });
+  }
+
+  if (products.length === 0) {
+    return res.status(404).json({ msg: 'No products exits.' });
+  }
+
+  res.status(200).json({ msg: 'Products fetched successfully!', products });
+};
+
+export const productsBackend = async (req: Request, res: Response) => {
+  let products = JSON.parse(await client.get('products_frontend'));
+
+  if (!products) {
+    products = await getProductFromRepo();
+
+    await client.set('products_frontend', JSON.stringify(products), {
+      EX: 60 * 30
+    });
+  }
+
+  if (req.query.search) {
+    const search: string = req.query.search.toString();
+
+    products = products.filter(
+      (product: Product) =>
+        product.title.toLowerCase().includes(search) ||
+        product.description.toLowerCase().includes(search)
+    );
   }
 
   if (products.length === 0) {
