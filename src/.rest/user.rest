@@ -3,3 +3,14 @@
 GET  http://localhost:8000/api/admin/ambassadors
 
 
+###
+
+GET  http://localhost:8000/api/ambassador/stats
+
+
+
+###
+
+GET  http://localhost:8000/api/ambassador/rankings
+
+

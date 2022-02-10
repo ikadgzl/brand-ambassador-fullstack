@@ -17,7 +17,7 @@ import {
   productsFrontend,
   updateProduct
 } from './controller/product.controller';
-import { getAmbassadors } from './controller/user.controller';
+import { getAmbassadors, getRankings } from './controller/user.controller';
 import { authMiddleware } from './middleware/auth.middleware';
 
 export const routes = (router: Router) => {
@@ -64,4 +64,5 @@ export const routes = (router: Router) => {
 
   router.post('/api/ambassador/links', authMiddleware, createLink);
   router.get('/api/ambassador/stats', authMiddleware, getStats);
+  router.get('/api/ambassador/rankings', authMiddleware, getRankings);
 };
