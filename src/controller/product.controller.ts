@@ -103,6 +103,15 @@ export const productsBackend = async (req: Request, res: Response) => {
     );
   }
 
+  if (req.query.sort === 'asc' || req.query.sort === 'desc') {
+    products.sort((a, b) => {
+      const diff = a.price - b.price;
+      const sign = diff / Math.abs(diff);
+
+      return req.query.sort === 'asc' ? sign : -sign;
+    });
+  }
+
   if (products.length === 0) {
     return res.status(404).json({ msg: 'No products exits.' });
   }

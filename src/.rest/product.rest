@@ -1,4 +1,4 @@
-GET http://localhost:8000/api/ambassador/products/backend?search=rubber
+GET http://localhost:8000/api/ambassador/products/backend?sort=ddesc
 
 ###
 
