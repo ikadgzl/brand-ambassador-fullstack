@@ -112,9 +112,20 @@ export const productsBackend = async (req: Request, res: Response) => {
     });
   }
 
+  const page: number = Number(req.query.page) || 1;
+  const perPage = 9;
+  const total = products.length;
+  const paginatedProcuts = products.slice((page - 1) * perPage, page * perPage);
+
   if (products.length === 0) {
     return res.status(404).json({ msg: 'No products exits.' });
   }
 
-  res.status(200).json({ msg: 'Products fetched successfully!', products });
+  res.status(200).json({
+    msg: 'Products fetched successfully!',
+    products: paginatedProcuts,
+    page,
+    total,
+    last_page: Math.ceil(total / perPage)
+  });
 };
