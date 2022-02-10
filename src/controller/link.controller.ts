@@ -26,3 +26,28 @@ export const createLink = async (req: Request, res: Response) => {
 
   res.status(200).json({ msg: 'Link created successfully.', link });
 };
+
+export const getStats = async (req: Request, res: Response) => {
+  const user = req['user'];
+
+  const links = await getRepository(Link).find({
+    where: {
+      user
+    },
+    relations: ['orders', 'order_items']
+  });
+
+  const linkStats = links.map((link) => {
+    const orders = link.orders.filter((order) => order.complete);
+
+    return {
+      code: link.code,
+      count: orders.length,
+      revenue: orders.reduce((acc, curr) => acc + curr.ambassador_revenue, 0)
+    };
+  });
+
+  res
+    .status(200)
+    .json({ msg: 'Statistics fetched successfully.', links: linkStats });
+};
