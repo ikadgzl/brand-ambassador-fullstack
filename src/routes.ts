@@ -6,7 +6,7 @@ import {
   register,
   updateUser
 } from './controller/auth.controller';
-import { getLinks } from './controller/link.controller';
+import { createLink, getLinks } from './controller/link.controller';
 import { getOrders } from './controller/order.controller';
 import {
   createProduct,
@@ -61,4 +61,6 @@ export const routes = (router: Router) => {
     authMiddleware,
     productsBackend
   );
+
+  router.post('/api/ambassador/links', authMiddleware, createLink);
 };

@@ -12,3 +12,17 @@ export const getLinks = async (req: Request, res: Response) => {
 
   res.status(200).json({ msg: 'Links fetched successfully.', links });
 };
+
+export const createLink = async (req: Request, res: Response) => {
+  const user = req['user'];
+
+  const link = await getRepository(Link).save({
+    user,
+    code: Math.random().toString(36).substring(6),
+    products: req.body.products.map((id) => ({
+      id
+    }))
+  });
+
+  res.status(200).json({ msg: 'Link created successfully.', link });
+};

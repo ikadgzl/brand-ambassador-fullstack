@@ -1,1 +1,10 @@
 GET http://localhost:8000/api/admin/users/3/links
+
+###
+
+POST http://localhost:8000/api/ambassador/links
+ Content-Type: application/json
+
+ {
+   "products": [5,6,7]
+ }
