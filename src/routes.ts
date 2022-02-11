@@ -6,7 +6,12 @@ import {
   register,
   updateUser
 } from './controller/auth.controller';
-import { createLink, getLinks, getStats } from './controller/link.controller';
+import {
+  createLink,
+  getLinkByCode,
+  getLinks,
+  getStats
+} from './controller/link.controller';
 import { getOrders } from './controller/order.controller';
 import {
   createProduct,
@@ -65,4 +70,6 @@ export const routes = (router: Router) => {
   router.post('/api/ambassador/links', authMiddleware, createLink);
   router.get('/api/ambassador/stats', authMiddleware, getStats);
   router.get('/api/ambassador/rankings', authMiddleware, getRankings);
+
+  router.get('/api/checkout/links/:code', getLinkByCode);
 };

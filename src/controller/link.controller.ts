@@ -51,3 +51,18 @@ export const getStats = async (req: Request, res: Response) => {
     .status(200)
     .json({ msg: 'Statistics fetched successfully.', links: linkStats });
 };
+
+export const getLinkByCode = async (req: Request, res: Response) => {
+  const link = getRepository(Link).findOne({
+    where: {
+      code: req.params.code
+    },
+    relations: ['user', 'products']
+  });
+
+  if (!link) {
+    return res.status(404).json({ msg: 'Such link does not exist' });
+  }
+
+  res.status(200).json({ msg: 'Link fetched successfully.', link });
+};
