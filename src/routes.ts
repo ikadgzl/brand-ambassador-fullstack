@@ -12,7 +12,7 @@ import {
   getLinks,
   getStats
 } from './controller/link.controller';
-import { getOrders } from './controller/order.controller';
+import { createOrder, getOrders } from './controller/order.controller';
 import {
   createProduct,
   deleteProduct,
@@ -72,4 +72,5 @@ export const routes = (router: Router) => {
   router.get('/api/ambassador/rankings', authMiddleware, getRankings);
 
   router.get('/api/checkout/links/:code', getLinkByCode);
+  router.post('/api/checkout/orders', createOrder);
 };
